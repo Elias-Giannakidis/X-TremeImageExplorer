@@ -1,0 +1,6 @@
+1. I have build the emulator using emulator exptension and android emulator SDK
+2. Using expo i see my app in web, IOS and android
+3. Using the tutorial https://www.youtube.com/watch?v=QSNkU7v0MPc can chagne the icons of the app.
+4. Usin the tutorial https://docs.expo.dev/develop/user-interface/fonts/ manage fonts in the app. (.otf, .ttf) play every where
+5. Safe areas is important https://docs.expo.dev/develop/user-interface/safe-areas/
+6. theme supprot dark and light mode: https://docs.expo.dev/develop/user-interface/color-themes/

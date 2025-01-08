@@ -32,6 +32,18 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+      "expo-font",
+        {
+          "fonts": ["./assets/fonts/SpaceMono-Regular.ttf"]
+        }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": ["./assets/images/favicon.png"]
+        }
       ]
     ],
     "experiments": {
