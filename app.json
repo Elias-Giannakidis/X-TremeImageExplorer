@@ -44,6 +44,19 @@
         {
           "assets": ["./assets/images/favicon.png"]
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app wants to have access to your images to display them in a awesome way!!!"
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow E-Treme Image Viewer to access your photos",
+          "isAccessMediaLocationEnabled": true
+        }
       ]
     ],
     "experiments": {
