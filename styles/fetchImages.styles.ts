@@ -2,65 +2,6 @@
 import constants from '../const';
 import {ColorSchemeName, FlexAlignType, StyleSheet} from 'react-native'
 
-export const darkStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: constants.COLORS.dark.background
-  },
-  image: {
-    width: 120,
-    height: 120,
-    margin: 5,
-    borderRadius: 8
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 50,
-    backgroundColor: constants.COLORS.dark.background
-  },
-  navButton: {
-    padding: 10
-  },
-  navButtonText: {
-    color: constants.COLORS.dark.text,
-    fontSize: 16,
-  }
-})
-
-export const lightStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: constants.COLORS.light.background
-  },
-  image: {
-    width: 120,
-    height: 120,
-    margin: 5,
-    borderRadius: 8
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 50,
-    backgroundColor: constants.COLORS.light.background
-  },
-  navButton: {
-    padding: 10
-  },
-  navButtonText: {
-    color: constants.COLORS.light.text,
-    fontSize: 16,
-  }
-})
-
-
 export const getStyle = (props: {theme: ColorSchemeName, screenWidth: number, columns: number}) => {
   const colors = props.theme === 'dark' ? constants.COLORS.dark : constants.COLORS.light
 
@@ -82,11 +23,15 @@ export const getStyle = (props: {theme: ColorSchemeName, screenWidth: number, co
     },
     navBar: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'flex-start',
-      height: 50,
-      width: '100%',
-      backgroundColor: colors.background
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: 80,
+      backgroundColor: colors.background,
+      padding: 3,
+      margin: 2,
+      borderColor: colors.text,
+      borderWidth: 3,
+      borderRadius: 6,
     },
     navButton: {
       padding: 10
@@ -94,6 +39,17 @@ export const getStyle = (props: {theme: ColorSchemeName, screenWidth: number, co
     navButtonText: {
       color: colors.text,
       fontSize: 16,
+    },
+    menuIcon: {
+      width: 60,
+      height: 60,
+    },
+    iconContainer: {
+      padding: 2,
+      borderColor: colors.text,
+      borderWidth: 3,
+      borderRadius: 6,
+      backgroundColor: '#fff'
     }
   })
 }

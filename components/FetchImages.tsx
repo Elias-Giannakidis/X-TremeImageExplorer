@@ -2,7 +2,7 @@ import { Text, Image, View, FlatList, useColorScheme, ColorSchemeName, Dimension
 import { useEffect, useState } from 'react';
 import React from 'react';
 import * as MediaLibrary from 'expo-media-library';
-import {darkStyles, getStyle, lightStyles} from "../styles/fetchImages.styles"
+import {getStyle} from "../styles/fetchImages.styles"
 import {initDB, storeNewAssets} from '../helpers/ImageStorage.helper'
 import constants from "../const"
 import { PanGestureHandler } from 'react-native-gesture-handler';
@@ -107,18 +107,23 @@ const FetchImages: React.FC<FetchImagesProps> = ({theme}) => {
     <View style={styles.container}>
 
       {/* Navigation Bar */}
-      <FlatList 
-        data={categories}
-        // style={styles.navBar} 
-        keyExtractor={(item, index) => `${item}-${index}`}
-        renderItem={(item) => (
-          <TouchableOpacity onPress={() => console.log(item)} style={styles.navButton}>
-           <Text style={styles.navButtonText}>{item.item}</Text>
-          </TouchableOpacity>
-        )}
-        showsHorizontalScrollIndicator={true}
-        horizontal={true}
-      />
+      <View style={styles.navBar}>
+        <View style={styles.iconContainer}>
+          <Image source={require(`../assets/images/menu_dark.png`)} style={styles.menuIcon}/>
+        </View>
+        <FlatList 
+          data={categories}
+          // style={styles.navBar} 
+          keyExtractor={(item, index) => `${item}-${index}`}
+          renderItem={(item) => (
+            <TouchableOpacity onPress={() => console.log(item)} style={styles.navButton}>
+             <Text style={styles.navButtonText}>{item.item}</Text>
+            </TouchableOpacity>
+          )}
+          showsHorizontalScrollIndicator={true}
+          horizontal={true}
+        />
+      </View>
 
       <FlatList
         data={images}
