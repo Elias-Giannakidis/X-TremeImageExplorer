@@ -1,15 +1,14 @@
-import { Text, Image, View, FlatList } from 'react-native';
+import { Text, Image, View, FlatList, useColorScheme, ColorSchemeName } from 'react-native';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import * as MediaLibrary from 'expo-media-library';
-import {styles} from "../styles/fetchImages"
-import {getAllAssets, initDB, storeNewAssets} from '../helpers/ImageStorage.helper'
+import {darkStyles, lightStyles} from "../styles/fetchImages.styles"
+import {initDB, storeNewAssets} from '../helpers/ImageStorage.helper'
 import constants from "../const"
 
 const PAGINATION = constants.PAGINATION
-console.log({PAGINATION})
 
-const FetchImages = () => {
+const FetchImages: React.FC<{theme: ColorSchemeName}> = ({theme}) => {
   const [images, setImages] = useState<string[]>([])
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
 
@@ -60,7 +59,7 @@ const FetchImages = () => {
 
   useEffect(() => {
     const init = async () => {
-
+        // initialize the database
         await initDB()
 
         // Request media library permissions
@@ -71,6 +70,7 @@ const FetchImages = () => {
         }
         setPermissionGranted(true)
 
+        // Start fetching images
         fetchImages(null);
     }
 
@@ -83,6 +83,8 @@ const FetchImages = () => {
     return <Text>Permission is required to access images.</Text>;
   }
 
+  let styles = theme === 'dark' ? darkStyles : lightStyles
+  console.log(`theme: ${theme}`)
   return (
     <View style={styles.container}>
       <Text >Image Gallery</Text>
