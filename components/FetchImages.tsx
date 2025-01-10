@@ -4,8 +4,10 @@ import React from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import {styles} from "../styles/fetchImages"
 import {getAllAssets, initDB, storeNewAssets} from '../helpers/ImageStorage.helper'
+import constants from "../const"
 
-const PAGINATION = 50
+const PAGINATION = constants.PAGINATION
+console.log({PAGINATION})
 
 const FetchImages = () => {
   const [images, setImages] = useState<string[]>([])
@@ -31,6 +33,8 @@ const FetchImages = () => {
 
     // Update the state with new images
     const newImageUris: string[] = assets.assets.map(asset => asset.uri);
+
+    await storeNewAssets(assets.assets)
 
     // Remove duplication
     const newImageUniqueUris: string[] = newImageUris.reduce((acc, uri) => {
