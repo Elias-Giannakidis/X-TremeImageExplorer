@@ -34,15 +34,19 @@
         }
       ],
       [
-      "expo-font",
+        "expo-font",
         {
-          "fonts": ["./assets/fonts/SpaceMono-Regular.ttf"]
+          "fonts": [
+            "./assets/fonts/SpaceMono-Regular.ttf"
+          ]
         }
       ],
       [
         "expo-asset",
         {
-          "assets": ["./assets/images/favicon.png"]
+          "assets": [
+            "./assets/images/favicon.png"
+          ]
         }
       ],
       [
@@ -56,6 +60,20 @@
         {
           "photosPermission": "Allow E-Treme Image Viewer to access your photos",
           "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": true,
+          "android": {
+            "enableFTS": false,
+            "useSQLCipher": false
+          },
+          "ios": {
+            "customBuildFlags": ["-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"]
+          }
         }
       ]
     ],
