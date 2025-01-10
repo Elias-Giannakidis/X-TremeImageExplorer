@@ -2,14 +2,18 @@ import { Text, Image, View, FlatList, useColorScheme, ColorSchemeName, Dimension
 import { useEffect, useState } from 'react';
 import React from 'react';
 import * as MediaLibrary from 'expo-media-library';
-import {darkStyles, lightStyles} from "../styles/fetchImages.styles"
+import {darkStyles, getStyle, lightStyles} from "../styles/fetchImages.styles"
 import {initDB, storeNewAssets} from '../helpers/ImageStorage.helper'
 import constants from "../const"
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
 const PAGINATION = constants.PAGINATION
 
-const FetchImages: React.FC<{theme: ColorSchemeName}> = ({theme}) => {
+interface FetchImagesProps {
+  theme: ColorSchemeName
+}
+
+const FetchImages: React.FC<FetchImagesProps> = ({theme}) => {
   const [images, setImages] = useState<string[]>([])
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
 
@@ -90,16 +94,32 @@ const FetchImages: React.FC<{theme: ColorSchemeName}> = ({theme}) => {
   }
 
   // Define the theme of the device
-  let styles = theme === 'dark' ? darkStyles : lightStyles
+  // let styles = theme === 'dark' ? darkStyles : lightStyles
 
   // Calculation of image columns
   const screenWidth = Dimensions.get('window').width
-  const imageWidth = styles.image.width + 2 * styles.image.margin
-  const numColumns = Math.floor(screenWidth / imageWidth)
+  const numColumns = 4
 
+  const styles = getStyle({theme: theme, screenWidth: screenWidth, columns: numColumns})
+
+  const categories: string[] = ["category1", "category2", "Elias Yo", "New Category", "AllCategories", "Zouzouno-category"]
   return (
     <View style={styles.container}>
-      <Text >Image Gallery</Text>
+
+      {/* Navigation Bar */}
+      <FlatList 
+        data={categories}
+        // style={styles.navBar} 
+        keyExtractor={(item, index) => `${item}-${index}`}
+        renderItem={(item) => (
+          <TouchableOpacity onPress={() => console.log(item)} style={styles.navButton}>
+           <Text style={styles.navButtonText}>{item.item}</Text>
+          </TouchableOpacity>
+        )}
+        showsHorizontalScrollIndicator={true}
+        horizontal={true}
+      />
+
       <FlatList
         data={images}
         keyExtractor={(item, index) => `${item}-${index}`}
