@@ -1,10 +1,11 @@
-import { Text, Image, View, FlatList, useColorScheme, ColorSchemeName, Dimensions } from 'react-native';
+import { Text, Image, View, FlatList, useColorScheme, ColorSchemeName, Dimensions, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import {darkStyles, lightStyles} from "../styles/fetchImages.styles"
 import {initDB, storeNewAssets} from '../helpers/ImageStorage.helper'
 import constants from "../const"
+import { PanGestureHandler } from 'react-native-gesture-handler';
 
 const PAGINATION = constants.PAGINATION
 
@@ -57,6 +58,11 @@ const FetchImages: React.FC<{theme: ColorSchemeName}> = ({theme}) => {
 
   }
 
+  const removeImage = (uri: string) => {
+    const newImages = images.filter((image) => {return image != uri})
+    setImages(newImages)
+  }
+
   useEffect(() => {
     const init = async () => {
         // initialize the database
@@ -83,8 +89,8 @@ const FetchImages: React.FC<{theme: ColorSchemeName}> = ({theme}) => {
     return <Text>Permission is required to access images.</Text>;
   }
 
+  // Define the theme of the device
   let styles = theme === 'dark' ? darkStyles : lightStyles
-  console.log(`theme: ${theme}`)
 
   // Calculation of image columns
   const screenWidth = Dimensions.get('window').width
@@ -98,11 +104,15 @@ const FetchImages: React.FC<{theme: ColorSchemeName}> = ({theme}) => {
         data={images}
         keyExtractor={(item, index) => `${item}-${index}`}
         renderItem={({ item }) => (
-          <Image source={{ uri: item }} style={styles.image} />
+            <TouchableOpacity onPress={() => removeImage(item)}>
+                <Image source={{ uri: item }} style={styles.image} />
+            </TouchableOpacity>
         )}
         numColumns = {numColumns}
         onEndReached={() => fetchImages(endCursor)} // Load more when reaching the end
         onEndReachedThreshold={0.5} // Trigger when 50% away from the bottom
+        onRefresh={() => {console.log("Refresh")}}
+        refreshing={isLoading}
         ListFooterComponent={
           isLoading ? <Text>Loading more images...</Text> : null
         }
