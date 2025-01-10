@@ -10,10 +10,10 @@ export const darkStyles = StyleSheet.create({
     backgroundColor: constants.COLORS.dark.background
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     margin: 5,
-    // borderRadius: '8px'
+    borderRadius: 8
   }
 })
 
@@ -25,9 +25,9 @@ export const lightStyles = StyleSheet.create({
     backgroundColor: constants.COLORS.light.background
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     margin: 5,
-    // borderRadius: '8px'
+    borderRadius: 8
   }
 })

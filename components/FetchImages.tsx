@@ -1,4 +1,4 @@
-import { Text, Image, View, FlatList, useColorScheme, ColorSchemeName } from 'react-native';
+import { Text, Image, View, FlatList, useColorScheme, ColorSchemeName, Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import * as MediaLibrary from 'expo-media-library';
@@ -85,6 +85,12 @@ const FetchImages: React.FC<{theme: ColorSchemeName}> = ({theme}) => {
 
   let styles = theme === 'dark' ? darkStyles : lightStyles
   console.log(`theme: ${theme}`)
+
+  // Calculation of image columns
+  const screenWidth = Dimensions.get('window').width
+  const imageWidth = styles.image.width + 2 * styles.image.margin
+  const numColumns = Math.floor(screenWidth / imageWidth)
+
   return (
     <View style={styles.container}>
       <Text >Image Gallery</Text>
@@ -94,7 +100,7 @@ const FetchImages: React.FC<{theme: ColorSchemeName}> = ({theme}) => {
         renderItem={({ item }) => (
           <Image source={{ uri: item }} style={styles.image} />
         )}
-        numColumns = {1}
+        numColumns = {numColumns}
         onEndReached={() => fetchImages(endCursor)} // Load more when reaching the end
         onEndReachedThreshold={0.5} // Trigger when 50% away from the bottom
         ListFooterComponent={
