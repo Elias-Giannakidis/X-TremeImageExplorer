@@ -1,7 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import * as MediaLibrary from 'expo-media-library';
 import { transformFileSync } from '@babel/core';
-import constants from '../const';
+import constants from './const';
+import { CategoryInterface } from './interfaces';
 
 /**
  * 
@@ -125,4 +126,13 @@ export const getAllAssets = async (): Promise<any[]> => {
     return assets
 }
 
+export const getAllCategories = async (): Promise<{name: string, color: string}[]> => {
+    const db = await getDBConnection();
+
+    const categories:CategoryInterface[] = await db.getAllAsync(`
+            SELECT * FROM categories
+        `)
+    
+    return categories
+}
 

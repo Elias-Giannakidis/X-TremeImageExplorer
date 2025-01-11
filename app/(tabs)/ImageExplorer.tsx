@@ -2,18 +2,19 @@ import { Text, Image, View, FlatList, useColorScheme, ColorSchemeName, Dimension
 import { useEffect, useState } from 'react';
 import React from 'react';
 import * as MediaLibrary from 'expo-media-library';
-import {getStyle} from "../styles/fetchImages.styles"
-import {initDB, storeNewAssets} from '../helpers/ImageStorage.helper'
-import constants from "../const"
+import {getStyle} from "../../styles/fetchImages.styles"
+import {initDB, storeNewAssets} from '../../helpers/database.handler'
+import constants from "../../helpers/const"
 import { PanGestureHandler } from 'react-native-gesture-handler';
+
+const darkMenuIcon = require("../../assets/images/menu_dark.png")
+const lightMenuIcon = require("../../assets/images/menu_light.png")
 
 const PAGINATION = constants.PAGINATION
 
-interface FetchImagesProps {
-  theme: ColorSchemeName
-}
+const FetchImages: React.FC = () => {
+  let theme = useColorScheme();
 
-const FetchImages: React.FC<FetchImagesProps> = ({theme}) => {
   const [images, setImages] = useState<string[]>([])
   const [permissionGranted, setPermissionGranted] = useState<boolean>(false)
 
@@ -93,14 +94,12 @@ const FetchImages: React.FC<FetchImagesProps> = ({theme}) => {
     return <Text>Permission is required to access images.</Text>;
   }
 
-  // Define the theme of the device
-  // let styles = theme === 'dark' ? darkStyles : lightStyles
-
   // Calculation of image columns
   const screenWidth = Dimensions.get('window').width
   const numColumns = 4
-
   const styles = getStyle({theme: theme, screenWidth: screenWidth, columns: numColumns})
+
+  const menuIcon = theme === 'dark' ? darkMenuIcon : lightMenuIcon
 
   const categories: string[] = ["category1", "category2", "Elias Yo", "New Category", "AllCategories", "Zouzouno-category"]
   return (
@@ -109,7 +108,7 @@ const FetchImages: React.FC<FetchImagesProps> = ({theme}) => {
       {/* Navigation Bar */}
       <View style={styles.navBar}>
         <View style={styles.iconContainer}>
-          <Image source={require(`../assets/images/menu_dark.png`)} style={styles.menuIcon}/>
+          <Image source={menuIcon} style={styles.menuIcon}/>
         </View>
         <FlatList 
           data={categories}
@@ -136,7 +135,6 @@ const FetchImages: React.FC<FetchImagesProps> = ({theme}) => {
         numColumns = {numColumns}
         onEndReached={() => fetchImages(endCursor)} // Load more when reaching the end
         onEndReachedThreshold={0.5} // Trigger when 50% away from the bottom
-        onRefresh={() => {console.log("Refresh")}}
         refreshing={isLoading}
         ListFooterComponent={
           isLoading ? <Text>Loading more images...</Text> : null

@@ -1,5 +1,5 @@
 
-import constants from '../const';
+import constants from '../helpers/const';
 import {ColorSchemeName, FlexAlignType, StyleSheet} from 'react-native'
 
 export const getStyle = (props: {theme: ColorSchemeName, screenWidth: number, columns: number}) => {
