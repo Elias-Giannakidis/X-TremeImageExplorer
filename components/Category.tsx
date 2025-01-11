@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {StyleSheet, View, Text, useColorScheme} from 'react-native'
 import constants from '../helpers/const'
@@ -11,28 +11,26 @@ const Category = (props: CategoryInterface) => {
     const [position, setPosition] = useState<{x:number, y:number}>({x:0, y:0})
     const [positionOffset, setPositionOffset] = useState<{dx:number,dy:number}>({dx:0, dy:0})
 
-    const ViewRef: React.MutableRefObject<any> = useRef(null)
+    let theme = useColorScheme();
 
     const onGestureEvent = (event: PanGestureHandlerGestureEvent ) => {
         setPosition({
-            x: event.nativeEvent.absoluteX - positionOffset.dx,
-            y: event.nativeEvent.absoluteY - positionOffset.dy,
+            x: event.nativeEvent.translationX - positionOffset.dx,
+            y: event.nativeEvent.translationY - positionOffset.dy,
         })
     }
 
     const onHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
         const { state } = event.nativeEvent;
         if (state === State.BEGAN) {
-            const x = event.nativeEvent.absoluteX
-            const y = event.nativeEvent.absoluteY
+            const x = event.nativeEvent.translationX
+            const y = event.nativeEvent.translationY
             setPositionOffset({
                 dx: x - position.x,
                 dy: y - position.y
              })
         };
     }
-
-    let theme = useColorScheme();
 
     const colorIcon = theme === 'dark' ? "color-palette" : "color-palette-outline"
     const styles =  StyleSheet.create({
@@ -58,9 +56,9 @@ const Category = (props: CategoryInterface) => {
   return (
     <GestureHandlerRootView>
         <PanGestureHandler onGestureEvent={onGestureEvent} onHandlerStateChange={onHandlerStateChange}>
-            <View style={[styles.view,{transform: [{translateX: position.x}, {translateY: position.y}]}]} ref={ViewRef}>
+            <View style={[styles.view,{transform: [{translateX: position.x}, {translateY: position.y}]}]}>
                 <Text>{props.name}</Text>
-                <Ionicons size={28} style={styles.icon} name={colorIcon} />;
+                <Ionicons size={28} style={styles.icon} name={colorIcon} />
             </View>
         </PanGestureHandler>
     </GestureHandlerRootView>
