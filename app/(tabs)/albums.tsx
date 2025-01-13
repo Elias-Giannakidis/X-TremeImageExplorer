@@ -5,6 +5,7 @@ import { deleteCategory, getAllCategories, insertCategory } from '@/helpers/data
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { CategoryInterface } from '@/helpers/interfaces';
 import constants from '@/helpers/const';
+import Slider from '@react-native-community/slider';
 
 
 const AlbumsScreen = () => {
@@ -129,8 +130,38 @@ const AddCategoryText = () => {
       setColorPickerVisible(!isColorPickerVisible)
   }
 
-  const picColor = (color: string) => {
-      setColor(color)
+  const picColor = (colorNumber: number) => {
+      const RGB_Order_change = [
+        [1, 1, 1],
+        [0, 1, 1],
+        [0, 1, 0],
+        [1, 1, 0],
+        [1, 0, 0],
+        [1, 0, 1],
+        [0, 0, 1],
+        [0, 0, 0]
+      ]
+      const color_level = Math.floor(colorNumber/255)
+      const color_offset = colorNumber % 255
+
+      const firstRGB = RGB_Order_change[Math.max(Math.min(color_level,7),0)]
+      const secontRGB = RGB_Order_change[Math.max(Math.min(color_level + 1,7),0)]
+
+      const finalRGB = [0, 1, 2].map((pos) => {
+        return Math.floor((firstRGB[pos] * (255 - color_offset)) + (secontRGB[pos] * color_offset))
+      })
+
+      console.log(`R: ${finalRGB[0]} G: ${finalRGB[1]} B: ${finalRGB[2]}`)
+
+      const hexColor = finalRGB.reduce((hex, value) => {
+        const hexValue = value.toString(16).padStart(2, '0')
+        hex = `${hex}${hexValue}`
+        return hex
+      },'#')
+
+      console.log(hexColor)
+
+      setColor(hexColor)
   }
 
   const addCategory = async () => {
@@ -177,22 +208,42 @@ const AddCategoryText = () => {
           borderColor: constants.COLORS[theme || 'light'].text,
           borderWidth: 3,
           borderRadius: 4
+      },
+      container: {
+        margin: 10,
+      },
+      slider: {
+        backgroundColor: "#f20a0a",
+        borderRadius: 10,
+        margin: 8
       }
   })
 
   return (
+    <View style={styles.container}>
+      <View style={styles.slider}>
+        <Slider 
+          minimumValue={0}
+          maximumValue={2039}
+          minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#FFFFFF"
+          onValueChange={(value) => {picColor(value)}}
+          step={1}
+        />
+      </View>
       <View style={styles.view}>
           <TextInput 
               style={styles.text}
               onChangeText={typingText}
               value={text}
               />
-              
           <View style={styles.iconView}>
               <Ionicons size={30} style={styles.icon} name={colorIcon} onPress={toggleColorPicker}/>
               <Ionicons size={30} style={styles.icon} name={addIcon} onPress={addCategory}/>
           </View>
       </View>
+    </View>
+
   )
 }
 
@@ -244,7 +295,6 @@ const AddCategoryText = () => {
 
   // Add new category use effect
   useEffect(() => {
-    console.log("add new category is called")
     if(categoryToBeAdded.name != ""){
       categories.push(categoryToBeAdded)
       // setCategories(categories)
