@@ -5,7 +5,6 @@ import * as MediaLibrary from 'expo-media-library';
 import {getStyle} from "../../styles/fetchImages.styles"
 import {initDB, storeNewAssets} from '../../helpers/database.handler'
 import constants from "../../helpers/const"
-import { PanGestureHandler } from 'react-native-gesture-handler';
 
 const darkMenuIcon = require("../../assets/images/menu_dark.png")
 const lightMenuIcon = require("../../assets/images/menu_light.png")

@@ -123,6 +123,7 @@ export const getAllAssets = async (): Promise<any[]> => {
     const assets = await db.getAllAsync(`
             SELECT * FROM assets
         `)
+    db.closeAsync()
     return assets
 }
 
@@ -132,7 +133,31 @@ export const getAllCategories = async (): Promise<{name: string, color: string}[
     const categories:CategoryInterface[] = await db.getAllAsync(`
             SELECT * FROM categories
         `)
-    
+    db.closeAsync()
     return categories
+}
+
+export const insertCategory = async (category: CategoryInterface):Promise<void> => {
+    const db = await getDBConnection()
+
+    await db.runAsync(
+        `INSERT OR IGNORE INTO categories (name, color) VALUES (?, ?)`,[category.name, category.color]
+    )
+    db.closeAsync()
+}
+
+export const deleteCategory = async (category: string):Promise<void> => {
+    try {
+        const db = await getDBConnection()
+
+        await db.runAsync(
+            `DELETE FROM categories WHERE name = $category`, {$category: category}
+        )
+        db.closeAsync()
+    } catch (error) {
+        console.log(error)
+    }
+   
+
 }
 

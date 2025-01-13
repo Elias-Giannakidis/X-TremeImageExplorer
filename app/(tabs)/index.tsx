@@ -4,10 +4,18 @@ import React from 'react';
 import FetchImages from './ImageExplorer'
 
 const HomeScreen = () => {
+
+  const style = StyleSheet.create({
+    text: {
+      fontSize: 85,
+      marginTop: 60,
+      color: '#f0c7dd',
+    }
+  })
   let colorScheme = useColorScheme();
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Text>Hello</Text>
+    <SafeAreaView >
+      <Text style={style.text}>Welcome</Text>
     </SafeAreaView>
   );
 }
