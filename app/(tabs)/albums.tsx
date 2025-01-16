@@ -77,7 +77,6 @@ const AlbumsScreen = () => {
 
     const deleteCategoryHandler = async () => {
       await deleteCategory(props.name)
-      console.log(`Delete category ${props.name} pressed`)
       setDeletedCategory(props.name)
     }
 
@@ -151,15 +150,11 @@ const AddCategoryText = () => {
         return Math.floor((firstRGB[pos] * (255 - color_offset)) + (secontRGB[pos] * color_offset))
       })
 
-      console.log(`R: ${finalRGB[0]} G: ${finalRGB[1]} B: ${finalRGB[2]}`)
-
       const hexColor = finalRGB.reduce((hex, value) => {
         const hexValue = value.toString(16).padStart(2, '0')
         hex = `${hex}${hexValue}`
         return hex
       },'#')
-
-      console.log(hexColor)
 
       setColor(hexColor)
   }

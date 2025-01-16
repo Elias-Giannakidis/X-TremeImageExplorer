@@ -1,6 +1,5 @@
 import * as SQLite from 'expo-sqlite';
 import * as MediaLibrary from 'expo-media-library';
-import { transformFileSync } from '@babel/core';
 import constants from './const';
 import { CategoryInterface } from './interfaces';
 
@@ -12,8 +11,8 @@ import { CategoryInterface } from './interfaces';
  * If the database doesn't exist this funciton create it.
  * 
  */
-const getDBConnection = async (): Promise<SQLite.SQLiteDatabase> => {
-    const db = await SQLite.openDatabaseAsync(constants.DATABASE);
+const getDBConnection = (): SQLite.SQLiteDatabase => {
+    const db = SQLite.openDatabaseSync(constants.DATABASE)
     return db
 }
 
@@ -21,7 +20,7 @@ export const initDB = async (): Promise<void> => {
 
     try {
     // Create or open the database
-    const db = await getDBConnection();
+    const db =  getDBConnection();
 
     await db.execAsync(`
         CREATE TABLE IF NOT EXISTS assets (
@@ -35,7 +34,8 @@ export const initDB = async (): Promise<void> => {
     await db.execAsync(`
         CREATE TABLE IF NOT EXISTS categories (
             name VARCHAR(255) PRIMARY KEY NOT NULL,
-            color VARCHAR(255)
+            color VARCHAR(255),
+            categoryGroup VARCHAR(255)
         );
 
         INSERT OR IGNORE INTO categories (name, color) VALUES ('new', '#2596be');
@@ -80,7 +80,7 @@ export const initDB = async (): Promise<void> => {
  */
 export const storeNewAssets = async (assets: MediaLibrary.Asset[]): Promise<void> => {
 
-    const db = await getDBConnection();
+    const db = getDBConnection();
 
     for(const asset of assets){
         try {
@@ -118,7 +118,7 @@ export const storeNewAssets = async (assets: MediaLibrary.Asset[]): Promise<void
 
 
 export const getAllAssets = async (): Promise<any[]> => {
-    const db = await getDBConnection();
+    const db = getDBConnection();
 
     const assets = await db.getAllAsync(`
             SELECT * FROM assets
@@ -128,7 +128,7 @@ export const getAllAssets = async (): Promise<any[]> => {
 }
 
 export const getAllCategories = async (): Promise<{name: string, color: string}[]> => {
-    const db = await getDBConnection();
+    const db = getDBConnection();
 
     const categories:CategoryInterface[] = await db.getAllAsync(`
             SELECT * FROM categories
@@ -138,7 +138,7 @@ export const getAllCategories = async (): Promise<{name: string, color: string}[
 }
 
 export const insertCategory = async (category: CategoryInterface):Promise<void> => {
-    const db = await getDBConnection()
+    const db = getDBConnection()
 
     await db.runAsync(
         `INSERT OR IGNORE INTO categories (name, color) VALUES (?, ?)`,[category.name, category.color]
@@ -148,7 +148,7 @@ export const insertCategory = async (category: CategoryInterface):Promise<void> 
 
 export const deleteCategory = async (category: string):Promise<void> => {
     try {
-        const db = await getDBConnection()
+        const db = getDBConnection()
 
         await db.runAsync(
             `DELETE FROM categories WHERE name = $category`, {$category: category}

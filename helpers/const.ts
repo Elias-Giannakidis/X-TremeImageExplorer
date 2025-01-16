@@ -3,7 +3,7 @@ const tintColorDark = '#fff';
 
 const constants = {
     PAGINATION: 50,
-    DATABASE: "myDatabase",
+    DATABASE: "XTremeImageViewDB",
     COLORS: {
       light: {
         text: '#11181C',
